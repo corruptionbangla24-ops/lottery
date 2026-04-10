@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
@@ -34,7 +34,11 @@
         /* নম্বর গ্রিড ফিক্স (৪ ও ৯ দাগের ভেতর) */
         .number-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 15px; justify-items: center; box-sizing: border-box; }
         .n-circle { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: white; cursor: pointer; border: 2px solid var(--dark); box-shadow: 2px 2px 0px var(--dark); box-sizing: border-box; }
-        .n-0, .n-5 { background: linear-gradient(135deg, var(--violet) 50%, var(--green) 50%); }
+        
+        /* ০: রেড + ভায়োলেট এবং ৫: গ্রিন + ভায়োলেট (১০০০০% একুরেট আপডেট) */
+        .n-0 { background: linear-gradient(135deg, var(--red) 50%, var(--violet) 50%); }
+        .n-5 { background: linear-gradient(135deg, var(--green) 50%, var(--violet) 50%); }
+        
         .n-1, .n-3, .n-7, .n-9 { background: var(--green); }
         .n-2, .n-4, .n-6, .n-8 { background: var(--red); }
 
@@ -49,12 +53,12 @@
         .b-big { background: #ffa000; border-radius: 25px 0 0 25px; border-right: none; }
         .b-small { background: #4db6ac; border-radius: 0 25px 25px 0; }
 
-        /* পপআপ ডিজাইন (হুবহু ছবির মতো) */
+        /* পপআপ ডিজাইন */
         .overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:100; }
         .modal { display: none; position: fixed; bottom:0; left:50%; transform: translateX(-50%); width:100%; max-width:360px; background:white; border-radius:20px 20px 0 0; padding:20px; z-index:101; box-sizing:border-box; animation: slideUp 0.3s; }
         @keyframes slideUp { from { bottom: -100%; } to { bottom: 0; } }
         .m-header { background: linear-gradient(135deg, var(--green) 50%, var(--violet) 50%); padding: 15px; border-radius: 12px; color: white; text-align: center; font-weight: bold; margin-bottom: 15px; }
-        .sel-tag { background: white; color: #333; padding: 2px 15px; border-radius: 5px; display: inline-block; margin-top: 5px; }
+        .sel-tag { background: white; color: #333; padding: 2px 15px; border-radius: 5px; display: inline-block; margin-top: 5px; font-size: 14px; font-weight: bold; }
         .chip-row { display: flex; gap: 8px; margin-bottom: 15px; }
         .chip { flex: 1; padding: 10px; border: 1px solid #ddd; background: #f9f9f9; text-align: center; cursor: pointer; border-radius: 5px; font-weight: bold; color: #666; }
         .chip.active { background: var(--green); color: white; border-color: var(--green); }
@@ -128,7 +132,7 @@
         <div class="chip" onclick="setBase(1000, this)">1000</div>
     </div>
     <div class="qty-row">
-        <span>Quantity</span>
+        <span style="font-weight:bold; color:#555;">Quantity</span>
         <div style="display:flex; align-items:center; gap:15px;">
             <button class="qty-btn" onclick="chgQ(-1)">-</button>
             <b id="qtyVal">1</b>
@@ -143,7 +147,9 @@
     const grid = document.getElementById('grid');
     const classes = ['n-0','n-1','n-2','n-3','n-4','n-5','n-6','n-7','n-8','n-9'];
 
-    for(let i=0; i<10; i++) { grid.innerHTML += `<div class="n-circle ${classes[i]}" onclick="openPop('${i}', '#333')">${i}</div>`; }
+    for(let i=0; i<10; i++) {
+        grid.innerHTML += `<div class="n-circle ${classes[i]}" onclick="openPop('${i}', '#333')">${i}</div>`;
+    }
 
     setInterval(() => {
         time--;
@@ -182,4 +188,4 @@
 </script>
 </body>
 </html>
-      
+         
