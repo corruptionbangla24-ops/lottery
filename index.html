@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WinGo Professional UI - Final</title>
+    <style>
+        :root { --primary: #ff4d4d; --green: #28a745; --violet: #9c27b0; --red: #dc3545; --dark: #333; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        
+        .main-container { width: 100%; max-width: 360px; background: white; border: 2px solid var(--dark); padding: 12px; box-sizing: border-box; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* Header Balance */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .balance-box { background: #fff; border: 2px solid var(--dark); padding: 8px 25px; font-weight: bold; font-size: 18px; border-radius: 6px; color: var(--primary); box-shadow: 3px 3px 0px var(--dark); }
+        
+        /* All Tabs Active Now */
+        .tabs { display: flex; border: 2px solid var(--dark); margin-bottom: 15px; border-radius: 6px; overflow: hidden; }
+        .tab { flex: 1; border-right: 1px solid var(--dark); padding: 10px 2px; text-align: center; font-size: 11px; cursor: pointer; font-weight: bold; background: #fff; }
+        .tab:last-child { border-right: none; }
+        .tab.active { background: var(--dark); color: white; }
+
+        .status { display: flex; border: 2px solid var(--dark); margin-bottom: 15px; border-radius: 6px; }
+        .status-box { flex: 1; padding: 8px; border-right: 2px solid var(--dark); text-align: center; font-size: 12px; font-weight: bold; color: #555; }
+        .status-box b { display: block; font-size: 16px; color: var(--primary); margin-top: 3px; }
+        .status-box:last-child { border-right: none; }
+
+        .colors { display: flex; gap: 8px; margin-bottom: 15px; }
+        .c-box { flex: 1; border: 2px solid var(--dark); padding: 12px; text-align: center; font-weight: bold; cursor: pointer; border-radius: 8px; color: white; box-shadow: 3px 3px 0px var(--dark); font-size: 14px; }
+
+        /* Fixed Grid (4 & 9 alignment fixed) */
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 15px; padding: 0 5px; }
+        .circle { width: 100%; aspect-ratio: 1; border: 2px solid var(--dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 18px; background: white; box-shadow: 2px 2px 0px var(--dark); box-sizing: border-box; }
+
+        .bs-container { display: flex; border: 2px solid var(--dark); margin-bottom: 15px; border-radius: 6px; overflow: hidden; }
+        .bs-box { flex: 1; padding: 15px; text-align: center; border-right: 2px solid var(--dark); font-weight: bold; cursor: pointer; font-size: 18px; color: white; text-shadow: 1px 1px #000;}
+        .bs-box:last-child { border-right: none; }
+
+        /* History Table */
+        table { width: 100%; border-collapse: collapse; border: 2px solid var(--dark); border-radius: 6px; overflow: hidden; }
+        th { background: var(--dark); color: white; padding: 8px; font-size: 11px; }
+        td { padding: 10px; border: 1px solid var(--dark); font-weight: bold; font-size: 11px; text-align: center; }
+
+        /* Betting Popup */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100; }
+        .modal { display: none; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 360px; background: white; border-radius: 20px 20px 0 0; padding: 20px; z-index: 101; box-sizing: border-box; animation: slideUp 0.3s; }
+        @keyframes slideUp { from { bottom: -100%; } to { bottom: 0; } }
+        .m-header { padding: 15px; border-radius: 10px; color: white; text-align: center; font-weight: bold; margin-bottom: 15px; }
+        .confirm-btn { width: 100%; padding: 15px; background: var(--green); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="header">
+        <div style="flex:1"></div>
+        <div class="balance-box">৳ <span id="balance">1000.00</span></div>
+        <div style="flex:1; text-align:right; font-size:24px; cursor:pointer;">≡</div>
+    </div>
+
+    <!-- All Timer Tabs Functional -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTimer(30, this)">WinGo<br>30 sec</div>
+        <div class="tab" onclick="switchTimer(60, this)">1 min</div>
+        <div class="tab" onclick="switchTimer(180, this)">3 min</div>
+        <div class="tab" onclick="switchTimer(300, this)">5 min</div>
+    </div>
+
+    <div class="status">
+        <div class="status-box">Period Number<br><b id="p-num">20260410001</b></div>
+        <div class="status-box">Time remaining<br><b id="timer">00:30</b></div>
+    </div>
+
+    <div class="colors">
+        <div class="c-box" style="background:var(--green)" onclick="openPopup('Green', '#28a745')">Green</div>
+        <div class="c-box" style="background:var(--violet)" onclick="openPopup('Violet', '#9c27b0')">Violet</div>
+        <div class="c-box" style="background:var(--red)" onclick="openPopup('Red', '#dc3545')">Red</div>
+    </div>
+
+    <div class="grid" id="numGrid"></div>
+
+    <div class="bs-container">
+        <div class="bs-box" style="background: #ffa000;" onclick="openPopup('Big', '#ffa000')">Big</div>
+        <div class="bs-box" style="background: #4db6ac;" onclick="openPopup('Small', '#4db6ac')">Small</div>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>Period</th><th>Number</th><th>Big small</th><th>Color</th></tr>
+        </thead>
+        <tbody id="h-body"></tbody>
+    </table>
+</div>
+
+<!-- Popup Modal -->
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="modal" id="modal">
+    <div class="m-header" id="mHeader">Select <span id="selName"></span></div>
+    <div style="text-align:center; padding:10px;">বাজি ধরার জন্য পপআপ সক্রিয় হয়েছে।</div>
+    <button class="confirm-btn" onclick="confirmBet()">Confirm Order</button>
+</div>
+
+<script>
+    let bal = 1000, time = 30, currentMode = 30;
+
+    // Grid Rendering for numbers 0-9
+    const numGrid = document.getElementById('numGrid');
+    for(let i=0; i<10; i++) {
+        numGrid.innerHTML += `<div class="circle" onclick="openPopup('${i}', '#333')">${i}</div>`;
+    }
+
+    // Tab switching logic
+    function switchTimer(sec, el) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        time = sec;
+        currentMode = sec;
+        updateTimeDisplay();
+    }
+
+    function updateTimeDisplay() {
+        let m = Math.floor(time / 60);
+        let s = time % 60;
+        document.getElementById('timer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    setInterval(() => {
+        time--;
+        updateTimeDisplay();
+        if(time <= 0) {
+            generateResult();
+            time = currentMode;
+        }
+    }, 1000);
+
+    function generateResult() {
+        let n = Math.floor(Math.random()*10);
+        let p = document.getElementById('p-num').innerText;
+        let color = n%2===0?'Red':'Green';
+        if(n===0 || n===5) color = 'Violet';
+        
+        let row = `<tr><td>${p}</td><td>${n}</td><td>${n>=5?'Big':'Small'}</td><td style="color:${color.toLowerCase()}">${color}</td></tr>`;
+        document.getElementById('h-body').innerHTML = row + document.getElementById('h-body').innerHTML;
+        document.getElementById('p-num').innerText = parseInt(p) + 1;
+    }
+
+    function openPopup(name, color) {
+        document.getElementById('selName').innerText = name;
+        document.getElementById('mHeader').style.background = color;
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('modal').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function confirmBet() {
+        alert("বেটিং সফল হয়েছে!");
+        closePopup();
+    }
+</script>
+</body>
+</html>
